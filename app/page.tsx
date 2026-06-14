@@ -3,7 +3,6 @@
 // import de bibliotecas ou arquivos necessários
 import { useEffect, useState } from "react";
 import { translations } from "./lang/translations";
-import Image from "next/image";
 
 type Location = {
   id: number;
@@ -14,41 +13,6 @@ type Location = {
 
 // Página inicial (home)
 export default function Home() {
-  // Splash Screen
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 1800);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (loading) {
-    return (
-      <main className="flex min-h-screen items-center justify-center bg-black">
-        <div className="flex flex-col items-center gap-4">
-          <div className="flex h-24 w-24 items-center justify-center rounded-full border-4 border-amber-300">
-            <span className="text-3xl font-bold text-amber-300">
-              <Image
-                src={"./Logo.png"}
-                alt="TimeMapper"
-                width={120}
-                height={120}
-                priority
-              />
-            </span>
-          </div>
-
-          <h1 className="text-3xl font-bold text-amber-300">TimeMapper</h1>
-
-          <p className="text-sm text-zinc-400">Carregando conversor...</p>
-        </div>
-      </main>
-    );
-  }
-
   // Lógica para alterar o idioma do site (pt, en, es)
   const [language, setLanguage] = useState<keyof typeof translations>("pt");
   const t = translations[language];
