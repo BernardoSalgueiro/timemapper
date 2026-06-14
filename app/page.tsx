@@ -1,9 +1,9 @@
 "use client";
 
 // import de bibliotecas ou arquivos necessários
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { translations } from "./lang/translations";
-
+import Image from "next/image";
 
 type Location = {
   id: number;
@@ -14,13 +14,44 @@ type Location = {
 
 // Página inicial (home)
 export default function Home() {
+  // Splash Screen
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1800);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    <main className="flex min-h-screen items-center justify-center bg-black">
+      <div className="flex flex-col items-center gap-4">
+        <div className="flex h-24 w-24 items-center justify-center rounded-full border-4 border-amber-300">
+          <span className="text-3xl font-bold text-amber-300">
+            <Image
+              src={"/Logo.png"}
+              alt="TimeMapper"
+              width={120}
+              height={120}
+              priority
+            />
+          </span>
+        </div>
+
+        <h1 className="text-3xl font-bold text-amber-300">TimeMapper</h1>
+
+        <p className="text-sm text-zinc-400">Carregando conversor...</p>
+      </div>
+    </main>;
+  }
 
   // Lógica para alterar o idioma do site (pt, en, es)
   const [language, setLanguage] = useState<keyof typeof translations>("pt");
   const t = translations[language];
 
   // Lógica da API para converter o horário
-
 
   const [origem, setOrigem] = useState("");
   const [destino, setDestino] = useState("");
@@ -42,7 +73,9 @@ export default function Home() {
       return;
     }
 
-    const response = await fetch(`/api/locations?query=${encodeURIComponent(texto)}&lang=${language}`);
+    const response = await fetch(
+      `/api/locations?query=${encodeURIComponent(texto)}&lang=${language}`,
+    );
     const data = await response.json();
 
     tipo === "origem" ? setSugestoesOrigem(data) : setSugestoesDestino(data);
@@ -50,7 +83,7 @@ export default function Home() {
 
   async function selecionarLocal(local: Location, tipo: "origem" | "destino") {
     const response = await fetch(
-      `/api/timezone?lat=${local.latitude}&lng=${local.longitude}`
+      `/api/timezone?lat=${local.latitude}&lng=${local.longitude}`,
     );
 
     const data = await response.json();
@@ -87,7 +120,8 @@ export default function Home() {
       },
       body: JSON.stringify({
         time,
-        fromTimezone: campoAtivo === "origem" ? timezoneOrigem : timezoneDestino,
+        fromTimezone:
+          campoAtivo === "origem" ? timezoneOrigem : timezoneDestino,
         toTimezone: campoAtivo === "origem" ? timezoneDestino : timezoneOrigem,
       }),
     });
@@ -131,10 +165,14 @@ export default function Home() {
             {t.title}
           </h1>
 
-          <select 
-          value={language}
-          onChange={(e) => setLanguage(e.target.value as keyof typeof translations)}
-          className="bg-zinc-900 p-2 rounded-lg outline-none ml-4" name="" id=""
+          <select
+            value={language}
+            onChange={(e) =>
+              setLanguage(e.target.value as keyof typeof translations)
+            }
+            className="bg-zinc-900 p-2 rounded-lg outline-none ml-4"
+            name=""
+            id=""
           >
             <option value="pt">🇵🇹 Português</option>
             <option value="en">🇬🇧 English</option>
@@ -189,7 +227,9 @@ export default function Home() {
           </div>
 
           <div className="relative rounded-2xl bg-zinc-900 p-4 shadow-lg">
-            <label className="mb-2 block font-sans font-bold">{t.destination}</label>
+            <label className="mb-2 block font-sans font-bold">
+              {t.destination}
+            </label>
 
             <input
               type="text"
@@ -229,7 +269,7 @@ export default function Home() {
             />
           </div>
         </div>
-        
+
         <p className="mt-6 text-sm text-zinc-400">{t.info}</p>
 
         <button
@@ -247,7 +287,6 @@ export default function Home() {
         >
           Limpar
         </button>
-
       </section>
     </main>
   );
