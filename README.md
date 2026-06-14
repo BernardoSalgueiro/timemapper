@@ -4,6 +4,8 @@ Conversor de fusos horários desenvolvido com Next.js, TypeScript e Tailwind CSS
 
 ## 📷 Preview
 
+<img width="1363" height="628" alt="Tela inicial" src="https://github.com/user-attachments/assets/99f182b9-f3dd-49f7-ac14-435ca9c3c68d" />
+
 ## 🚀 Funcionalidades
 
 - Conversão de horários entre diferentes fusos horários.
