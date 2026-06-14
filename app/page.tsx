@@ -26,25 +26,27 @@ export default function Home() {
   }, []);
 
   if (loading) {
-    <main className="flex min-h-screen items-center justify-center bg-black">
-      <div className="flex flex-col items-center gap-4">
-        <div className="flex h-24 w-24 items-center justify-center rounded-full border-4 border-amber-300">
-          <span className="text-3xl font-bold text-amber-300">
-            <Image
-              src={"/Logo.png"}
-              alt="TimeMapper"
-              width={120}
-              height={120}
-              priority
-            />
-          </span>
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-black">
+        <div className="flex flex-col items-center gap-4">
+          <div className="flex h-24 w-24 items-center justify-center rounded-full border-4 border-amber-300">
+            <span className="text-3xl font-bold text-amber-300">
+              <Image
+                src={"./Logo.png"}
+                alt="TimeMapper"
+                width={120}
+                height={120}
+                priority
+              />
+            </span>
+          </div>
+
+          <h1 className="text-3xl font-bold text-amber-300">TimeMapper</h1>
+
+          <p className="text-sm text-zinc-400">Carregando conversor...</p>
         </div>
-
-        <h1 className="text-3xl font-bold text-amber-300">TimeMapper</h1>
-
-        <p className="text-sm text-zinc-400">Carregando conversor...</p>
-      </div>
-    </main>;
+      </main>
+    );
   }
 
   // Lógica para alterar o idioma do site (pt, en, es)
